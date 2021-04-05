@@ -4,11 +4,12 @@ import java.io.File;
 
 import javax.swing.JOptionPane;
 
-import myplugin.generator.options.GeneratorOptions;
-import myplugin.generator.options.ProjectOptions;
-
 import com.nomagic.actions.NMAction;
 import com.nomagic.magicdraw.actions.ActionsConfiguratorsManager;
+
+
+import myplugin.generator.options.GeneratorOptions;
+import myplugin.generator.options.ProjectOptions;
 
 /** MagicDraw plugin that performes code generation
  * 
@@ -41,11 +42,21 @@ public class MyPlugin extends com.nomagic.magicdraw.plugins.Plugin {
 		
 		String destDir = System.getProperty("user.home") + File.separator + "__generated__";
 
-		GeneratorOptions ejbOptions = new GeneratorOptions(destDir, "ejbclass", "templates", "{0}.java", true, "ejb");
 		
-		ProjectOptions.getProjectOptions().getGeneratorOptions().put("EJBGenerator", ejbOptions);
+		GeneratorOptions ejbOptions = new GeneratorOptions(destDir, "ejbclass", "templates", "{0}.java", true, "ejb"); 
+		
+		ProjectOptions.getProjectOptions().getGeneratorOptions().put("EJBGenerator", ejbOptions); 
+		
+		ejbOptions.setTemplateDir(pluginDir + File.separator +  ejbOptions.getTemplateDir()); // apsolutna putanja 
+		
+		GeneratorOptions repositoryOptions = new GeneratorOptions(destDir, "repositoryclass", "templates", "{0}Repository.java", true, "repository");
+		
+		ProjectOptions.getProjectOptions().getGeneratorOptions().put("RepositoryGenerator", repositoryOptions);
+		
+		repositoryOptions.setTemplateDir(pluginDir + File.separator + repositoryOptions.getTemplateDir()); // apsolutna putanja
 
-		ejbOptions.setTemplateDir(pluginDir + File.separator + ejbOptions.getTemplateDir()); // apsolutna putanja
+
+	
 	}
 
 	private NMAction[] getSubmenuActions() {

@@ -19,9 +19,11 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 import myplugin.analyzer.AnalyzeException;
 import myplugin.analyzer.ModelAnalyzer;
 import myplugin.generator.EJBGenerator;
+import myplugin.generator.RepositoryGenerator;
 import myplugin.generator.fmmodel.FMModel;
 import myplugin.generator.options.GeneratorOptions;
 import myplugin.generator.options.ProjectOptions;
+
 
 /** Action that activate code generation */
 @SuppressWarnings("serial")
@@ -40,15 +42,23 @@ class GenerateAction extends MDAction{
 		if (root == null) return;
 	
 		ModelAnalyzer analyzer = new ModelAnalyzer(root, "ejb");	
+		ModelAnalyzer analyzer2 = new ModelAnalyzer(root, "repository");	
+
 		
 		try {
 			analyzer.prepareModel();	
-			GeneratorOptions go = ProjectOptions.getProjectOptions().getGeneratorOptions().get("EJBGenerator");			
-			EJBGenerator generator = new EJBGenerator(go);
-			generator.generate();
+			GeneratorOptions go1 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("EJBGenerator");			
+			EJBGenerator ejbGenerator = new EJBGenerator(go1);
+			ejbGenerator.generate();
+			
+			
+			analyzer2.prepareModel();	
+			GeneratorOptions go2 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("RepositoryGenerator");			
+			RepositoryGenerator repositoryGenerator = new RepositoryGenerator(go2);
+			repositoryGenerator.generate();
 			/**  @ToDo: Also call other generators */ 
-			JOptionPane.showMessageDialog(null, "Code is successfully generated! Generated code is in folder: " + go.getOutputPath() +
-					                         ", package: " + go.getFilePackage());
+			JOptionPane.showMessageDialog(null, "Code is successfully generated! Generated code is in folder: " + go1.getOutputPath() +
+					                         ", package: " + go1.getFilePackage());
 			exportToXml();
 		} catch (AnalyzeException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
