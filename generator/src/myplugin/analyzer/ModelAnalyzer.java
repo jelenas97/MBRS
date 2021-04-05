@@ -17,6 +17,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Enumeration;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Type;
+import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 
 
 /** Model Analyzer takes necessary metadata from the MagicDraw model and puts it in 
@@ -99,7 +100,14 @@ public class ModelAnalyzer {
 		if (cl.getName() == null) 
 			throw new AnalyzeException("Classes must have names!");
 		
-		FMClass fmClass = new FMClass(cl.getName(), packageName, cl.getVisibility().toString());
+		String tableName = "ASD";
+		Stereotype entityStereotype = StereotypesHelper.getAppliedStereotypeByString(cl, "Entity");
+		if (entityStereotype != null) {
+			tableName = getTagValue(cl, entityStereotype, "tableName");
+		}
+		
+		FMClass fmClass = new FMClass(cl.getName(), packageName, cl.getVisibility().toString() );
+		fmClass.setTableName(tableName);
 		Iterator<Property> it = ModelHelper.attributes(cl);
 		while (it.hasNext()) {
 			Property p = it.next();
@@ -148,5 +156,14 @@ public class ModelAnalyzer {
 		return fmEnum;
 	}	
 	
+	private String getTagValue(Element el, Stereotype s, String tagName) {
+		List<String> value = StereotypesHelper.getStereotypePropertyValueAsString(el, s, tagName);
+		if(value == null)
+			return null;
+		if(value.size() == 0)
+			return null;
+		return value.get(0);
+		
+	}
 	
 }
