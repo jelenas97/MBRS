@@ -42,7 +42,6 @@ public class MyPlugin extends com.nomagic.magicdraw.plugins.Plugin {
 		
 		String destDir = System.getProperty("user.home") + File.separator + "__generated__";
 
-		
 		GeneratorOptions ejbOptions = new GeneratorOptions(destDir, "ejbclass", "templates", "{0}.java", true, "ejb"); 
 		
 		ProjectOptions.getProjectOptions().getGeneratorOptions().put("EJBGenerator", ejbOptions); 
@@ -54,9 +53,18 @@ public class MyPlugin extends com.nomagic.magicdraw.plugins.Plugin {
 		ProjectOptions.getProjectOptions().getGeneratorOptions().put("RepositoryGenerator", repositoryOptions);
 		
 		repositoryOptions.setTemplateDir(pluginDir + File.separator + repositoryOptions.getTemplateDir()); // apsolutna putanja
-
-
-	
+		
+		GeneratorOptions serviceOptions = new GeneratorOptions(destDir, "serviceClass", "templates", "{0}Service.java", true, "service");
+		
+		ProjectOptions.getProjectOptions().getGeneratorOptions().put("ServiceGenerator", serviceOptions);
+		
+		serviceOptions.setTemplateDir(pluginDir + File.separator + serviceOptions.getTemplateDir()); // apsolutna putanja
+		
+		GeneratorOptions serviceImplOptions = new GeneratorOptions(destDir, "serviceImplClass", "templates", "{0}ServiceImpl.java", true, "service.impl");
+		
+		ProjectOptions.getProjectOptions().getGeneratorOptions().put("ServiceImplGenerator", serviceImplOptions);
+		
+		serviceImplOptions.setTemplateDir(pluginDir + File.separator + serviceImplOptions.getTemplateDir()); // apsolutna putanja
 	}
 
 	private NMAction[] getSubmenuActions() {

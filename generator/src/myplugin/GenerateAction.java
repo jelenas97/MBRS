@@ -20,6 +20,8 @@ import myplugin.analyzer.AnalyzeException;
 import myplugin.analyzer.ModelAnalyzer;
 import myplugin.generator.EJBGenerator;
 import myplugin.generator.RepositoryGenerator;
+import myplugin.generator.ServiceGenerator;
+import myplugin.generator.ServiceImplGenerator;
 import myplugin.generator.fmmodel.FMModel;
 import myplugin.generator.options.GeneratorOptions;
 import myplugin.generator.options.ProjectOptions;
@@ -41,9 +43,13 @@ class GenerateAction extends MDAction{
 		
 		if (root == null) return;
 	
-		ModelAnalyzer analyzer = new ModelAnalyzer(root, "ejb");	
-		ModelAnalyzer analyzer2 = new ModelAnalyzer(root, "repository");	
+		ModelAnalyzer analyzer = new ModelAnalyzer(root, "model");
+		
+		ModelAnalyzer analyzer2 = new ModelAnalyzer(root, "repository");
+		
+		ModelAnalyzer analyzer3 = new ModelAnalyzer(root, "service");
 
+		ModelAnalyzer analyzer4 = new ModelAnalyzer(root, "service.impl");
 		
 		try {
 			analyzer.prepareModel();	
@@ -51,14 +57,23 @@ class GenerateAction extends MDAction{
 			EJBGenerator ejbGenerator = new EJBGenerator(go1);
 			ejbGenerator.generate();
 			
-			
 			analyzer2.prepareModel();	
 			GeneratorOptions go2 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("RepositoryGenerator");			
 			RepositoryGenerator repositoryGenerator = new RepositoryGenerator(go2);
 			repositoryGenerator.generate();
-			/**  @ToDo: Also call other generators */ 
-			JOptionPane.showMessageDialog(null, "Code is successfully generated! Generated code is in folder: " + go1.getOutputPath() +
-					                         ", package: " + go1.getFilePackage());
+			
+			analyzer3.prepareModel();	
+			GeneratorOptions go3 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("ServiceGenerator");			
+			ServiceGenerator serviceGenerator = new ServiceGenerator(go3);
+			serviceGenerator.generate();
+			
+			analyzer4.prepareModel();	
+			GeneratorOptions go4 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("ServiceImplGenerator");			
+			ServiceImplGenerator serviceImplGenerator = new ServiceImplGenerator(go4);
+			serviceImplGenerator.generate();
+			
+			/**  @ToDo: Also call other generators */
+			JOptionPane.showMessageDialog(null, "Code is successfully generated! Generated code is in folder: " + go1.getOutputPath());
 			exportToXml();
 		} catch (AnalyzeException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
