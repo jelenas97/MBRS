@@ -1,5 +1,10 @@
 package ${class.typePackage};
 
+import javax.persistence.*;
+import java.util.*;
+
+@Entity
+@Table
 ${class.visibility} class ${class.name} {  
 <#list properties as property>
 	<#if property.upper == 1 >   

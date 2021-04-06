@@ -1,18 +1,24 @@
 package myplugin.analyzer;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import myplugin.generator.fmmodel.FMClass;
 import myplugin.generator.fmmodel.FMEnumeration;
+import myplugin.generator.fmmodel.FMMethod;
 import myplugin.generator.fmmodel.FMModel;
+import myplugin.generator.fmmodel.FMParameter;
 import myplugin.generator.fmmodel.FMProperty;
+import myplugin.generator.fmmodel.FMType;
 
 import com.nomagic.uml2.ext.jmi.helpers.ModelHelper;
 import com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.EnumerationLiteral;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Operation;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Parameter;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Enumeration;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
@@ -100,7 +106,7 @@ public class ModelAnalyzer {
 		if (cl.getName() == null) 
 			throw new AnalyzeException("Classes must have names!");
 		
-		String tableName = "ASD";
+		String tableName = "";
 		Stereotype entityStereotype = StereotypesHelper.getAppliedStereotypeByString(cl, "Entity");
 		if (entityStereotype != null) {
 			tableName = getTagValue(cl, entityStereotype, "tableName");
@@ -108,18 +114,25 @@ public class ModelAnalyzer {
 		
 		FMClass fmClass = new FMClass(cl.getName(), packageName, cl.getVisibility().toString() );
 		fmClass.setTableName(tableName);
+		
 		Iterator<Property> it = ModelHelper.attributes(cl);
 		while (it.hasNext()) {
 			Property p = it.next();
 			FMProperty prop = getPropertyData(p, cl);
 			fmClass.addProperty(prop);	
-		}	
+		}
 		
-		/** @ToDo:
-		 * Add import declarations etc. */		
+		Iterator<Operation> op = ModelHelper.operations(cl);
+		while (op.hasNext()) {
+			Operation o = op.next();
+			FMMethod met = getMethodData(o, cl);
+			
+			fmClass.addMethod(met);
+		}
+			
 		return fmClass;
 	}
-	
+
 	private FMProperty getPropertyData(Property p, Class cl) throws AnalyzeException {
 		String attName = p.getName();
 		if (attName == null) 
@@ -141,8 +154,70 @@ public class ModelAnalyzer {
 		FMProperty prop = new FMProperty(attName, typeName, p.getVisibility().toString(), 
 				lower, upper);
 		return prop;		
-	}	
+	}
 	
+	private FMMethod getMethodData(Operation o, Class cl) throws AnalyzeException {
+		String methodName = o.getName();
+		if (methodName == null) 
+			throw new AnalyzeException("Operations of the class: " + cl.getName() +
+					" must have names!");
+		
+		String methodVisibility = o.getVisibility().toString();
+		if (methodVisibility == null) 
+			throw new AnalyzeException("Operations of the class: " + cl.getName() +
+					" must have visibility!");
+		
+		Type methodType = o.getType();
+		if (methodType == null) 
+			throw new AnalyzeException("Operations of the class: " + cl.getName() +
+					" must have a return type!");
+		
+		String typeName = methodType.getName();
+		if (typeName == null) 
+			throw new AnalyzeException("Operations of the class: " + cl.getName() +
+					" must have a return type name!");
+		
+		//TODO: Differentiate between built-in types and Linked Properties
+		FMType retType = new FMType(typeName, "");
+		
+		FMMethod met = new FMMethod(methodVisibility, retType, methodName);
+		
+		List<FMParameter> parameters = new ArrayList<>();
+		
+		Iterator<Parameter> it = o.getOwnedParameter().iterator();	
+		while (it.hasNext()) {
+			Parameter p = it.next();
+			if (p.getDirection().toString().equals("in")) {
+				FMParameter par = getParameterData(p, met);
+				parameters.add(par);
+			}
+		}
+		
+		met.setParameters(parameters);
+		
+		return met;
+	}
+	
+
+	private FMParameter getParameterData(Parameter p, FMMethod met) throws AnalyzeException {
+		String parName = p.getName();
+		if (parName == null) 
+			throw new AnalyzeException("Parameters of the operation: " + met.getName() +
+					" must have names!");
+		
+		String parType = p.getType().getName();
+		if (parType == null) 
+			throw new AnalyzeException("Parameters of the operation: " + met.getName() +
+					" must have types!");
+		
+		//TODO: Differentiate between built-in types and Linked Properties
+		FMType parameterType = new FMType(parType, "");
+		
+		FMParameter par = new FMParameter(parameterType, parName);
+		
+		return par;
+	}
+
 	private FMEnumeration getEnumerationData(Enumeration enumeration, String packageName) throws AnalyzeException {
 		FMEnumeration fmEnum = new FMEnumeration(enumeration.getName(), packageName);
 		List<EnumerationLiteral> list = enumeration.getOwnedLiteral();
