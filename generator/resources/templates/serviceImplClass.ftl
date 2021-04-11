@@ -45,10 +45,19 @@ public class ${class.name}ServiceImpl implements ${class.name}Service {
     }
     
 <#list methods as method>
+	<#if method.returnType.name == "Collection" || method.returnType.name == "Set" || method.returnType.name == "List" >
+    @Override
+    ${method.visibility} ${method.returnType.name}<${class.name}> ${method.name}Generated(<#list method.parameters as parameter>${parameter.type.name} ${parameter.name}<#sep>, </#sep></#list>){
+        // TODO Auto-generated method stub
+    }
+
+	<#else>
     @Override
     ${method.visibility} ${method.returnType.name} ${method.name}Generated(<#list method.parameters as parameter>${parameter.type.name} ${parameter.name}<#sep>, </#sep></#list>){
         // TODO Auto-generated method stub
     }
+
+	</#if>
 </#list>
 }
 

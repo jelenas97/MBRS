@@ -19,6 +19,12 @@ public interface ${class.name}Service {
     void delete(Long id);
     
 <#list methods as method>
+	<#if method.returnType.name == "Collection" || method.returnType.name == "Set" || method.returnType.name == "List" >
+    ${method.visibility} ${method.returnType.name}<${class.name}> ${method.name}Generated(<#list method.parameters as parameter>${parameter.type.name} ${parameter.name}<#sep>, </#sep></#list>);
+
+	<#else>
     ${method.visibility} ${method.returnType.name} ${method.name}Generated(<#list method.parameters as parameter>${parameter.type.name} ${parameter.name}<#sep>, </#sep></#list>);
+
+	</#if>
 </#list>
 }

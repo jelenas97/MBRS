@@ -19,9 +19,12 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 import myplugin.analyzer.AnalyzeException;
 import myplugin.analyzer.ModelAnalyzer;
 import myplugin.generator.EJBGenerator;
+import myplugin.generator.MainGenerator;
+import myplugin.generator.PomGenerator;
 import myplugin.generator.RepositoryGenerator;
 import myplugin.generator.ServiceGenerator;
 import myplugin.generator.ServiceImplGenerator;
+import myplugin.generator.ApplicationPropertiesGenerator;
 import myplugin.generator.ControllerGenerator;
 import myplugin.generator.fmmodel.FMModel;
 import myplugin.generator.options.GeneratorOptions;
@@ -44,15 +47,21 @@ class GenerateAction extends MDAction{
 		
 		if (root == null) return;
 	
-		ModelAnalyzer analyzer = new ModelAnalyzer(root, "model");
+		ModelAnalyzer analyzer = new ModelAnalyzer(root, "mbrs.tim2.model");
 		
-		ModelAnalyzer analyzer2 = new ModelAnalyzer(root, "repository");
+		ModelAnalyzer analyzer2 = new ModelAnalyzer(root, "mbrs.tim2.repository");
 		
-		ModelAnalyzer analyzer3 = new ModelAnalyzer(root, "service");
+		ModelAnalyzer analyzer3 = new ModelAnalyzer(root, "mbrs.tim2.service");
 
-		ModelAnalyzer analyzer4 = new ModelAnalyzer(root, "service.impl");
+		ModelAnalyzer analyzer4 = new ModelAnalyzer(root, "mbrs.tim2.service.impl");
 		
-		ModelAnalyzer analyzer5 = new ModelAnalyzer(root, "controller");
+		ModelAnalyzer analyzer5 = new ModelAnalyzer(root, "mbrs.tim2.controller");
+		
+		ModelAnalyzer analyzer6 = new ModelAnalyzer(root, "mbrs.tim2");
+		
+		ModelAnalyzer analyzer7 = new ModelAnalyzer(root, "mbrs.tim2");
+		
+		ModelAnalyzer analyzer8 = new ModelAnalyzer(root, "mbrs.tim2");
 		
 		try {
 			analyzer.prepareModel();	
@@ -79,6 +88,21 @@ class GenerateAction extends MDAction{
 			GeneratorOptions go5 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("ControllerGenerator");			
 			ControllerGenerator controllerGenerator = new ControllerGenerator(go5);
 			controllerGenerator.generate();
+			
+			analyzer6.prepareModel();	
+			GeneratorOptions go6 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("PomGenerator");			
+			PomGenerator pomGenerator = new PomGenerator(go6);
+			pomGenerator.generate();
+			
+			analyzer7.prepareModel();	
+			GeneratorOptions go7 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("ApplicationPropertiesGenerator");			
+			ApplicationPropertiesGenerator appPropGenerator = new ApplicationPropertiesGenerator(go7);
+			appPropGenerator.generate();
+			
+			analyzer8.prepareModel();	
+			GeneratorOptions go8 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("MainGenerator");			
+			MainGenerator mainGenerator = new MainGenerator(go8);
+			mainGenerator.generate();
 			
 			/**  @ToDo: Also call other generators */
 			JOptionPane.showMessageDialog(null, "Code is successfully generated! Generated code is in folder: " + go1.getOutputPath());
