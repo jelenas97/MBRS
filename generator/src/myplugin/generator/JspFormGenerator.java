@@ -24,7 +24,7 @@ public class JspFormGenerator extends BasicGenerator{
 	        super(generatorOptions);
 	    }
 
-	 public void generate() {
+	    public void generate() {
 
 	        try {
 	            super.generate();
@@ -44,6 +44,10 @@ public class JspFormGenerator extends BasicGenerator{
 	                String dtoPackage = replacePackageFragment(modelPackage, "model", "dto");
 
 	                out = getWriter(cl.getName(), cl.getTypePackage());
+	                ArrayList<String> imports = new ArrayList<>();
+	                String import_str = "";
+
+	                out = getWriter(uncapFirst(cl.getName()), cl.getTypePackage());
 	                if (out != null) {
 
 	                    context.clear();
@@ -84,6 +88,8 @@ public class JspFormGenerator extends BasicGenerator{
 	                    context.put("properties", cl.getProperties());
 	                    context.put("entity_properties", entity_relations);
 	                    context.put("importedPackages", cl.getImportedPackages());
+
+	                    context.put("imports", imports);
 	                    getTemplate().process(context, out);
 	                    out.flush();
 	                }
