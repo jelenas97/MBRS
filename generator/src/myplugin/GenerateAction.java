@@ -22,6 +22,7 @@ import myplugin.generator.EJBGenerator;
 import myplugin.generator.RepositoryGenerator;
 import myplugin.generator.ServiceGenerator;
 import myplugin.generator.ServiceImplGenerator;
+import myplugin.generator.ControllerGenerator;
 import myplugin.generator.fmmodel.FMModel;
 import myplugin.generator.options.GeneratorOptions;
 import myplugin.generator.options.ProjectOptions;
@@ -51,6 +52,8 @@ class GenerateAction extends MDAction{
 
 		ModelAnalyzer analyzer4 = new ModelAnalyzer(root, "service.impl");
 		
+		ModelAnalyzer analyzer5 = new ModelAnalyzer(root, "controller");
+		
 		try {
 			analyzer.prepareModel();	
 			GeneratorOptions go1 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("EJBGenerator");			
@@ -71,6 +74,11 @@ class GenerateAction extends MDAction{
 			GeneratorOptions go4 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("ServiceImplGenerator");			
 			ServiceImplGenerator serviceImplGenerator = new ServiceImplGenerator(go4);
 			serviceImplGenerator.generate();
+			
+			analyzer5.prepareModel();	
+			GeneratorOptions go5 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("ControllerGenerator");			
+			ControllerGenerator controllerGenerator = new ControllerGenerator(go5);
+			controllerGenerator.generate();
 			
 			/**  @ToDo: Also call other generators */
 			JOptionPane.showMessageDialog(null, "Code is successfully generated! Generated code is in folder: " + go1.getOutputPath());
