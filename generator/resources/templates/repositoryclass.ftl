@@ -3,9 +3,9 @@ package ${class.typePackage};
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import ${class.typePackage}.${class.name};
+import mbrs.tim2.model.${class.name};
 
 @Repository
-public interface ${class.name}Repository extends JpaRepository<${class.name}> {
+public interface ${class.name}Repository extends JpaRepository<${class.name}, Long> {
 
 }

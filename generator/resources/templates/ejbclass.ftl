@@ -11,10 +11,11 @@ ${class.visibility} class ${class.name} {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     ${property.visibility} ${property.type?cap_first} ${property.name};
-
+    
    <#elseif property.type == "date" || property.type == "long">
     @Column
     ${property.visibility} ${property.type?cap_first} ${property.name};
+    
    <#elseif property.upper == 1 >
     @Column
     ${property.visibility} ${property.type} ${property.name};

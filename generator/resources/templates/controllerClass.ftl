@@ -6,8 +6,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import java.util.List;
+import mbrs.tim2.model.*;
 
-import service.${class.name}Service;
+import mbrs.tim2.service.${class.name}Service;
 
 @Controller
 @RequestMapping("/${class.name}")
@@ -18,9 +19,9 @@ public class ${class.name}Controller{
 	
 	
 	@GetMapping(value = "/all")
-	public ResponseEntity<List< ${class.name}>> getAll() {
+	public ResponseEntity<List<${class.name}>> getAll() {
         try {
-            return new ResponseEntity<>( ${class.name?uncap_first}Service.getAll(), HttpStatus.OK);
+            return new ResponseEntity<>(${class.name?uncap_first}Service.getAll(), HttpStatus.OK);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -40,15 +41,15 @@ public class ${class.name}Controller{
         }
     }
     
-    @PutMapping(value="/update/{id}")
+    @PutMapping(value = "/update/{id}")
     public ResponseEntity update(@PathVariable Long id,  @RequestBody ${class.name} ${class.name?uncap_first}) {
         try {
             ${class.name} ${class.name?uncap_first}1 = ${class.name?uncap_first}Service.update(${class.name?uncap_first});
 
-            if ( ${class.name?uncap_first}1 == null){
+            if (${class.name?uncap_first}1 == null){
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
-            return new ResponseEntity<>( ${class.name?uncap_first}1, HttpStatus.OK);
+            return new ResponseEntity<>(${class.name?uncap_first}1, HttpStatus.OK);
         }
         catch (Exception e){
             return new ResponseEntity<>(e.getStackTrace(), HttpStatus.BAD_REQUEST);
@@ -60,8 +61,8 @@ public class ${class.name}Controller{
 
         try {
 
-            ${class.name}  ${class.name?uncap_first}1 =  ${class.name?uncap_first}Service.add(${class.name?uncap_first});
-            if (${class.name?uncap_first}1  == null) {
+            ${class.name} ${class.name?uncap_first}1 = ${class.name?uncap_first}Service.add(${class.name?uncap_first});
+            if (${class.name?uncap_first}1 == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
                 return new ResponseEntity<>(${class.name?uncap_first}1, HttpStatus.CREATED);
@@ -73,7 +74,7 @@ public class ${class.name}Controller{
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     
-    @PutMapping(value="/delete/{id}")
+    @PutMapping(value = "/delete/{id}")
     public ResponseEntity<Boolean> delete(@PathVariable Long id) {
 
         Boolean deleted = ${class.name?uncap_first}Service.delete(id);

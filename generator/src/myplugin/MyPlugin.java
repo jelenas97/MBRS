@@ -78,7 +78,7 @@ public class MyPlugin extends com.nomagic.magicdraw.plugins.Plugin {
 		
 		pomOptions.setTemplateDir(pluginDir + File.separator + pomOptions.getTemplateDir()); // apsolutna putanja
 
-		GeneratorOptions appPropOptions = new GeneratorOptions(destDir + File.separator + "src" + File.separator + "main" + File.separator + "resources", "appPropertiesFile", "templates", "application.properties.xml", true, "");
+		GeneratorOptions appPropOptions = new GeneratorOptions(destDir + File.separator + "src" + File.separator + "main" + File.separator + "resources", "appPropertiesFile", "templates", "application.properties", true, "");
 		
 		ProjectOptions.getProjectOptions().getGeneratorOptions().put("ApplicationPropertiesGenerator", appPropOptions);
 		
