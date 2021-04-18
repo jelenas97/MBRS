@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import myplugin.generator.fmmodel.FMClass;
 import myplugin.generator.fmmodel.FMEnumeration;
 import myplugin.generator.fmmodel.FMMethod;
 import myplugin.generator.fmmodel.FMModel;
 import myplugin.generator.fmmodel.FMParameter;
 import myplugin.generator.fmmodel.FMProperty;
+import myplugin.generator.fmmodel.FMReferencedProperty;
 import myplugin.generator.fmmodel.FMType;
 
 import com.nomagic.uml2.ext.jmi.helpers.ModelHelper;
@@ -118,8 +121,14 @@ public class ModelAnalyzer {
 		Iterator<Property> it = ModelHelper.attributes(cl);
 		while (it.hasNext()) {
 			Property p = it.next();
-			FMProperty prop = getPropertyData(p, cl);
-			fmClass.addProperty(prop);	
+			
+			if (p.getOpposite() != null) {
+				FMReferencedProperty referencedProperty = getReferencedPropertyData(p, cl);
+				fmClass.addReferencedProperty(referencedProperty);
+			} else {
+				FMProperty prop = getPropertyData(p, cl);
+				fmClass.addProperty(prop);
+			}
 		}
 		
 		Iterator<Operation> op = ModelHelper.operations(cl);
@@ -154,6 +163,75 @@ public class ModelAnalyzer {
 		FMProperty prop = new FMProperty(attName, typeName, p.getVisibility().toString(), 
 				lower, upper);
 		return prop;		
+	}
+	
+	private FMReferencedProperty getReferencedPropertyData(Property p, Class cl) throws AnalyzeException {
+		Stereotype referencedPropertyStereotype = null;
+		
+		String cascade = null;
+		String fetchType = null;
+		String mappedBy = null;
+		String joinTable = null;
+		String columnName = null;
+		int upper = p.getUpper();
+		Integer oppositeEnd = p.getOpposite().getUpper();
+		if(upper == -1 && oppositeEnd == -1) {
+			referencedPropertyStereotype = StereotypesHelper.getAppliedStereotypeByString(p, "ManyToMany");
+		} else if(upper == -1 && oppositeEnd == 1) {
+			referencedPropertyStereotype = StereotypesHelper.getAppliedStereotypeByString(p, "OneToMany");
+		} else if(upper == 1 && oppositeEnd == -1) {
+			referencedPropertyStereotype = StereotypesHelper.getAppliedStereotypeByString(p, "ManyToOne");
+		} else {
+			referencedPropertyStereotype = StereotypesHelper.getAppliedStereotypeByString(p, "OneToOne");
+		}
+
+		
+		if(referencedPropertyStereotype != null) {
+			List<Property> tags = referencedPropertyStereotype.getOwnedAttribute();
+			for (int j = 0; j < tags.size(); ++j) {
+				Property tagDef = tags.get(j);
+				String tagName = tagDef.getName();
+				//JOptionPane.showMessageDialog(null, tagName);
+				String value = getTagValue(p, referencedPropertyStereotype, tagName);
+			
+				switch (tagName) {
+					case "cascade":
+						cascade = value;
+						break;
+					case "fetch":
+						fetchType = value;
+						break;
+					case "joinTable":
+						joinTable = value;
+						break;
+					case "mappedBy":
+						mappedBy = value;
+						break;
+					case "columnName":
+						columnName = value;
+						break;
+				}
+			}
+		} 
+
+		
+		String attName = p.getName();
+		if (attName == null) 
+			throw new AnalyzeException("Properties of the class: " + cl.getName() +
+					" must have names!");
+		Type attType = p.getType();
+		if (attType == null)
+			throw new AnalyzeException("Property " + cl.getName() + "." +
+			p.getName() + " must have type!");
+		String typeName = attType.getName();
+		if (typeName == null)
+			throw new AnalyzeException("Type ot the property " + cl.getName() + "." +
+			p.getName() + " must have name!");		
+		FMReferencedProperty prop = new FMReferencedProperty(attName, typeName, p.getVisibility().toString(),
+				p.getLower(), p.getUpper(), cascade, fetchType, mappedBy, joinTable, columnName, oppositeEnd);
+		return prop;
+
+
 	}
 	
 	private FMMethod getMethodData(Operation o, Class cl) throws AnalyzeException {

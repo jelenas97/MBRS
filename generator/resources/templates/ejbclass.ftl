@@ -19,8 +19,6 @@ ${class.visibility} class ${class.name} {
     @Column
     ${property.visibility} ${property.type} ${property.name};
 
-   <#elseif property.upper == -1 >
-    ${property.visibility} Set<${property.type}> ${property.name} = new HashSet<${property.type}>();
 
    <#else>
        <#list 1..property.upper as i>
@@ -29,6 +27,32 @@ ${class.visibility} class ${class.name} {
        </#list>
    </#if>
 </#list>
+<#list referencedProperties as property>
+  
+	<#if property.upper == -1 && property.oppositeEnd == -1>@ManyToMany<#elseif property.upper == -1 && property.oppositeEnd == 1>@OneToMany<#elseif property.upper == 1 && property.oppositeEnd== -1>@ManyToOne<#else>@OneToOne</#if><#rt>
+	<#lt><#if (property.fetch)?? || (property.cascade)?? || (property.mappedBy)?? || (property.optional)?? >(<#rt>
+	<#if (property.cascade)??>
+		<#lt>cascade = CascadeType.${property.cascade}<#rt>
+	</#if>
+	<#if (property.fetch)??>
+		<#lt><#if (property.cascade)??>, </#if>fetch = FetchType.${property.fetch}<#rt>
+	</#if>
+	<#if (property.mappedBy)??>
+		<#lt><#if (property.cascade)?? || (property.fetch)??>, </#if>mappedBy = "${property.mappedBy}"<#rt>
+	</#if>
+	<#lt>)</#if>
+	<#if (property.joinTable)??>
+	@JoinTable(name="${property.joinTable}")
+	</#if>
+	<#if (property.columnName)??>
+	@JoinColumn(name="${property.columnName}")
+	</#if>
+	${property.visibility} <#if property.upper == -1>Set<</#if>${property.type?cap_first}<#if property.upper == -1>></#if> ${property.name}; ${'\n'}
+	   
+	     
+</#list>
+
+
 <#list properties as property>
 	<#if property.upper == 1 >
     <#if property.type == "date" || property.type == "long" >
