@@ -24,7 +24,7 @@ public class JspFormGenerator extends BasicGenerator{
 	        super(generatorOptions);
 	    }
 
-	    public void generate() {
+	 public void generate() {
 
 	        try {
 	            super.generate();
@@ -43,17 +43,7 @@ public class JspFormGenerator extends BasicGenerator{
 	                String servicePackage = replacePackageFragment(modelPackage, "model", "service");
 	                String dtoPackage = replacePackageFragment(modelPackage, "model", "dto");
 
-	                ArrayList<String> imports = new ArrayList<>();
-	                String import_str = "";
-	                /*for(FMProperty p : cl.getFMLinkedProperty()){
-	                    import_str =  cl.getTypePackage() +"." + p.getType();
-	                    if(!imports.contains(import_str) && import_str != ""){
-	                        imports.add(import_str);
-	                    }
-	                }*/
-
-	                out = getWriter(uncapFirst(cl.getName()), "webapp.WEB-INF.jsp");
-	                //out = getWriter(cl.getName() + "Form", cl.getTypePackage());
+	                out = getWriter(cl.getName(), cl.getTypePackage());
 	                if (out != null) {
 
 	                    context.clear();
@@ -62,6 +52,7 @@ public class JspFormGenerator extends BasicGenerator{
 	                    List<TypeMapping> typeMappings = ProjectOptions.getProjectOptions().getTypeMappings();
 	                    for(TypeMapping type: typeMappings) {
 	                        javaTypes.add(type.getDestType());
+	                        System.out.println("JavaType: " + type.getDestType());
 	                    }
 
 	                    List<String> enumerationTypes = new ArrayList<String>();
@@ -69,6 +60,7 @@ public class JspFormGenerator extends BasicGenerator{
 	                    List<FMEnumeration> enumerations = FMModel.getInstance().getEnumerations();
 	                    for(FMEnumeration enumVal: enumerations) {
 	                        enumerationTypes.add(enumVal.getName());
+	                        System.out.println("EnumerationType: " + enumVal.getName());
 	                        enumerationValues.put(enumVal.getName(), enumVal.getValues());
 
 	                    }
@@ -92,7 +84,6 @@ public class JspFormGenerator extends BasicGenerator{
 	                    context.put("properties", cl.getProperties());
 	                    context.put("entity_properties", entity_relations);
 	                    context.put("importedPackages", cl.getImportedPackages());
-	                    context.put("imports", imports);
 	                    getTemplate().process(context, out);
 	                    out.flush();
 	                }

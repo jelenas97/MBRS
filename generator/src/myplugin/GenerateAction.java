@@ -19,12 +19,21 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 import myplugin.analyzer.AnalyzeException;
 import myplugin.analyzer.ModelAnalyzer;
 import myplugin.generator.EJBGenerator;
+import myplugin.generator.EnumGenerator;
+import myplugin.generator.EnumInterfaceGenerator;
+import myplugin.generator.HomeControllerGenerator;
+import myplugin.generator.JspDetailsViewGenerator;
+import myplugin.generator.JspFormGenerator;
+import myplugin.generator.JspHomePageGenerator;
+import myplugin.generator.JspListViewGenerator;
+import myplugin.generator.JspNavbarGenerator;
 import myplugin.generator.MainGenerator;
 import myplugin.generator.PomGenerator;
 import myplugin.generator.RepositoryGenerator;
 import myplugin.generator.ServiceGenerator;
 import myplugin.generator.ServiceImplGenerator;
 import myplugin.generator.ApplicationPropertiesGenerator;
+import myplugin.generator.ConfigurationGenerator;
 import myplugin.generator.ControllerGenerator;
 import myplugin.generator.fmmodel.FMModel;
 import myplugin.generator.options.GeneratorOptions;
@@ -62,6 +71,24 @@ class GenerateAction extends MDAction{
 		ModelAnalyzer analyzer7 = new ModelAnalyzer(root, "mbrs.tim2");
 		
 		ModelAnalyzer analyzer8 = new ModelAnalyzer(root, "mbrs.tim2");
+		
+		ModelAnalyzer analyzer9 = new ModelAnalyzer(root, "");
+		
+		ModelAnalyzer analyzer10 = new ModelAnalyzer(root, "");
+
+		ModelAnalyzer analyzer11 = new ModelAnalyzer(root, "");
+		
+		ModelAnalyzer analyzer12 = new ModelAnalyzer(root, "mbrs.tim2.enumerations");
+		
+		ModelAnalyzer analyzer13 = new ModelAnalyzer(root, "mbrs.tim2.enumerations");
+		
+		ModelAnalyzer analyzer14 = new ModelAnalyzer(root, "mbrs.tim2.controller");
+		
+		ModelAnalyzer analyzer15 = new ModelAnalyzer(root, "mbrs.tim2.configuration");
+		
+		ModelAnalyzer analyzer16 = new ModelAnalyzer(root, "");
+
+		ModelAnalyzer analyzer17 = new ModelAnalyzer(root, "");
 		
 		try {
 			analyzer.prepareModel();	
@@ -103,6 +130,51 @@ class GenerateAction extends MDAction{
 			GeneratorOptions go8 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("MainGenerator");			
 			MainGenerator mainGenerator = new MainGenerator(go8);
 			mainGenerator.generate();
+			
+			analyzer9.prepareModel();	
+			GeneratorOptions go9 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("JspFormGenerator");			
+			JspFormGenerator jspFormGenerator = new JspFormGenerator(go9);
+			jspFormGenerator.generate();
+			
+			analyzer10.prepareModel();	
+			GeneratorOptions go10 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("JspListViewGenerator");			
+			JspListViewGenerator jspListViewGenerator = new JspListViewGenerator(go10);
+			jspListViewGenerator.generate();
+			
+			analyzer11.prepareModel();	
+			GeneratorOptions go11 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("JspDetailsViewGenerator");			
+			JspDetailsViewGenerator jspDetailsViewGenerator = new JspDetailsViewGenerator(go11);
+			jspDetailsViewGenerator.generate();
+			
+			analyzer12.prepareModel();	
+			GeneratorOptions go12 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("EnumGenerator");			
+			EnumGenerator enumGenerator = new EnumGenerator(go12);
+			enumGenerator.generate();
+			
+			analyzer13.prepareModel();	
+			GeneratorOptions go13 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("EnumInterfaceGenerator");			
+			EnumInterfaceGenerator enumInterfaceGenerator = new EnumInterfaceGenerator(go13);
+			enumInterfaceGenerator.generate();
+			
+			analyzer14.prepareModel();	
+			GeneratorOptions go14 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("HomeControllerGenerator");			
+			HomeControllerGenerator homeControllerGenerator = new HomeControllerGenerator(go14);
+			homeControllerGenerator.generate();
+			
+			analyzer15.prepareModel();	
+			GeneratorOptions go15 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("ConfigurationGenerator");			
+			ConfigurationGenerator configurationGenerator = new ConfigurationGenerator(go15);
+			configurationGenerator.generate();
+			
+			analyzer16.prepareModel();	
+			GeneratorOptions go16 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("JspHomePageGenerator");			
+			JspHomePageGenerator jspHomePageGenerator = new JspHomePageGenerator(go16);
+			jspHomePageGenerator.generate();
+			
+			analyzer17.prepareModel();	
+			GeneratorOptions go17 = ProjectOptions.getProjectOptions().getGeneratorOptions().get("JspNavbarGenerator");			
+			JspNavbarGenerator jspNavbarGen = new JspNavbarGenerator(go17);
+			jspNavbarGen.generate();
 			
 			/**  @ToDo: Also call other generators */
 			JOptionPane.showMessageDialog(null, "Code is successfully generated! Generated code is in folder: " + go1.getOutputPath());
