@@ -31,11 +31,11 @@ public class ${class.name}Controller{
 		return "${class.name}Form";
     }
     
-    @PostMapping(value="/update/{id}")
-    public ResponseEntity update(@PathVariable Long id,@RequestBody ${class.name} ${class.name?uncap_first}) {
+    @PostMapping(value = "/update/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody ${class.name} ${class.name?uncap_first}) {
         try {
-            	${class.name?uncap_first}Service.save(${class.name?uncap_first});
-                return new ResponseEntity<>(HttpStatus.OK);
+            ${class.name?uncap_first}Service.save(${class.name?uncap_first});
+            return new ResponseEntity<>(HttpStatus.OK);
         }
         catch (Exception e){
             return new ResponseEntity<>(e.getStackTrace(), HttpStatus.BAD_REQUEST);
@@ -46,10 +46,10 @@ public class ${class.name}Controller{
     public ResponseEntity<${class.name}> add(@RequestBody ${class.name} ${class.name?uncap_first}){
         try {
             ${class.name?uncap_first}Service.save(${class.name?uncap_first});
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
         catch(Exception e){
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     	}    
     }
     
@@ -62,7 +62,7 @@ public class ${class.name}Controller{
     		return new ResponseEntity<>(${class.name?uncap_first}, HttpStatus.OK);
     	}
     	catch(Exception e) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     	}
     }
     

@@ -4,8 +4,11 @@
 This file was generated based on the template "${.current_template_name}".
 Changes to this file may cause incorrect behavior and will be lost if the code is regenerated.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+>
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -28,7 +31,6 @@ Changes to this file may cause incorrect behavior and will be lost if the code i
   </properties>
 
   <dependencies>
-
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
@@ -61,8 +63,8 @@ Changes to this file may cause incorrect behavior and will be lost if the code i
       <groupId>javax.servlet</groupId>
       <artifactId>jstl</artifactId>
     </dependency>
-	
-	<dependency>
+
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-tomcat</artifactId>
       <scope>provided</scope>
@@ -73,8 +75,6 @@ Changes to this file may cause incorrect behavior and will be lost if the code i
       <artifactId>tomcat-embed-jasper</artifactId>
       <scope>provided</scope>
     </dependency>
-
-
   </dependencies>
 
   <build>
@@ -85,5 +85,4 @@ Changes to this file may cause incorrect behavior and will be lost if the code i
       </plugin>
     </plugins>
   </build>
-
 </project>

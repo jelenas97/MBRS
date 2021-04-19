@@ -18,30 +18,30 @@ public class ${class.name}ServiceImpl implements ${class.name}Service {
 <#list methods as method>
 	<#if method.returnType.name == "Collection" || method.returnType.name == "Set" || method.returnType.name == "List" >
 		<#if method.name == "getAll">
-	    @Override
-	    ${method.visibility} ${method.returnType.name}<${class.name}> ${method.name}(<#list method.parameters as parameter>${parameter.type.name} ${parameter.name}<#sep>, </#sep></#list>){
-	        return ${class.name?uncap_first}Repository.findAll();
-	    }
+    @Override
+    ${method.visibility} ${method.returnType.name}<${class.name}> ${method.name}(<#list method.parameters as parameter>${parameter.type.name} ${parameter.name}<#sep>, </#sep></#list>){
+        return ${class.name?uncap_first}Repository.findAll();
+    }
 	    </#if>
 
 	<#else>
 		<#if method.name == "save">
-   	 	@Override
-	    ${method.visibility} ${method.returnType.name} ${method.name}(<#list method.parameters as parameter>${parameter.type.name} ${parameter.name}<#sep>, </#sep></#list>){
-	        ${class.name?uncap_first}Repository.save(${class.name?uncap_first});
-	    }
+ 	@Override
+    ${method.visibility} ${method.returnType.name} ${method.name}(<#list method.parameters as parameter>${parameter.type.name} ${parameter.name}<#sep>, </#sep></#list>){
+        ${class.name?uncap_first}Repository.save(${class.name?uncap_first});
+    }
 		</#if>		
 		<#if method.name == "delete">
-   	 	@Override
-	    ${method.visibility} ${method.returnType.name} ${method.name}(<#list method.parameters as parameter>${parameter.type.name} ${parameter.name}<#sep>, </#sep></#list>){
-	        ${class.name?uncap_first}Repository.delete(${class.name?uncap_first});
-	    }
+ 	@Override
+    ${method.visibility} ${method.returnType.name} ${method.name}(<#list method.parameters as parameter>${parameter.type.name} ${parameter.name}<#sep>, </#sep></#list>){
+        ${class.name?uncap_first}Repository.delete(${class.name?uncap_first});
+    }
 		</#if>		
 		<#if method.name == "getById">
-   	 	@Override
-	    ${method.visibility} ${method.returnType.name} ${method.name}(<#list method.parameters as parameter>${parameter.type.name?cap_first} ${parameter.name}<#sep>, </#sep></#list>){
-	        return ${class.name?uncap_first}Repository.getOne(id);
-	    }
+ 	@Override
+    ${method.visibility} ${method.returnType.name} ${method.name}(<#list method.parameters as parameter>${parameter.type.name?cap_first} ${parameter.name}<#sep>, </#sep></#list>){
+        return ${class.name?uncap_first}Repository.getOne(id);
+    }
 		</#if>
 				
 	</#if>

@@ -7,5 +7,4 @@ import mbrs.tim2.model.${class.name};
 
 @Repository
 public interface ${class.name}Repository extends JpaRepository<${class.name}, Long> {
-
 }

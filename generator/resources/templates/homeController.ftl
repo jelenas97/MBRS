@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 @Controller
 public class HomeController {
 
-	@GetMapping(value = { "/", "/home" })
+	@GetMapping(value = {"/", "/home"})
 	public String homePage() {
 		return "home";
 	}

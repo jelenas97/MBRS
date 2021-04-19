@@ -8,12 +8,16 @@ import java.util.Map;
 
 import javax.swing.JOptionPane;
 
+import com.nomagic.magicdraw.core.Application;
+
 import freemarker.template.TemplateException;
 import myplugin.generator.fmmodel.FMClass;
 import myplugin.generator.fmmodel.FMModel;
 import myplugin.generator.options.GeneratorOptions;
 
 public class EnumInterfaceGenerator extends BasicGenerator {
+	
+	public final String PROJECT_NAME = Application.getInstance().getProject().getName();
 
 	public EnumInterfaceGenerator(GeneratorOptions generatorOptions) {
 		super(generatorOptions);
@@ -37,6 +41,7 @@ public class EnumInterfaceGenerator extends BasicGenerator {
 				out = getWriter(cl.getName(), cl.getTypePackage());
 				if (out != null) {
 					context.clear();
+					context.put("app_name", PROJECT_NAME);
 					context.put("class", cl);
 					context.put("properties", cl.getProperties());
 					context.put("importedPackages", cl.getImportedPackages());
