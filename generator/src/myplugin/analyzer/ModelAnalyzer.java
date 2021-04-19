@@ -110,6 +110,7 @@ public class ModelAnalyzer {
 			throw new AnalyzeException("Classes must have names!");
 		
 		String tableName = "";
+				
 		Stereotype entityStereotype = StereotypesHelper.getAppliedStereotypeByString(cl, "Entity");
 		if (entityStereotype != null) {
 			tableName = getTagValue(cl, entityStereotype, "tableName");

@@ -5,84 +5,70 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
+import mbrs.tim2.model.${class.name};
+import org.springframework.ui.Model;
+import java.util.Collection;
 import java.util.List;
 
-import service.${class.name}Service;
+import mbrs.tim2.service.${class.name}Service;
 
 @Controller
-@RequestMapping("/${class.name}")
+@RequestMapping("/${class.name?uncap_first}")
 public class ${class.name}Controller{
 
 	@Autowired
 	private ${class.name}Service ${class.name?uncap_first}Service;
 	
-	
-	@GetMapping(value = "/all")
-	public ResponseEntity<List< ${class.name}>> getAll() {
-        try {
-            return new ResponseEntity<>( ${class.name?uncap_first}Service.getAll(), HttpStatus.OK);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+	@GetMapping
+	public String getAll(Model model) {
+		initModel(model);
+		return "${class.name}ListView";
     }
     
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<List<${class.name}>> getOne(@PathVariable Long id) {
-
-        try {
-            return new ResponseEntity<>(${class.name?uncap_first}Service.getOne(id), HttpStatus.OK);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+	@GetMapping(value = "/new")
+	public String getOne(@PathVariable Long id, Model model) {
+		initModel(model);
+		return "${class.name}Form";
     }
     
-    @PutMapping(value="/update/{id}")
-    public ResponseEntity update(@PathVariable Long id,  @RequestBody ${class.name} ${class.name?uncap_first}) {
+    @PostMapping(value="/update/{id}")
+    public ResponseEntity update(@PathVariable Long id,@RequestBody ${class.name} ${class.name?uncap_first}) {
         try {
-            ${class.name} ${class.name?uncap_first}1 = ${class.name?uncap_first}Service.update(${class.name?uncap_first});
-
-            if ( ${class.name?uncap_first}1 == null){
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
-            return new ResponseEntity<>( ${class.name?uncap_first}1, HttpStatus.OK);
+            	${class.name?uncap_first}Service.save(${class.name?uncap_first});
+                return new ResponseEntity<>(HttpStatus.OK);
         }
         catch (Exception e){
             return new ResponseEntity<>(e.getStackTrace(), HttpStatus.BAD_REQUEST);
         }
     }
       
-    @PostMapping("/add")
-    public ResponseEntity< ${class.name}> add(@RequestBody ${class.name} ${class.name?uncap_first}){
-
+    @PostMapping
+    public ResponseEntity<${class.name}> add(@RequestBody ${class.name} ${class.name?uncap_first}){
         try {
-
-            ${class.name}  ${class.name?uncap_first}1 =  ${class.name?uncap_first}Service.add(${class.name?uncap_first});
-            if (${class.name?uncap_first}1  == null) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-                return new ResponseEntity<>(${class.name?uncap_first}1, HttpStatus.CREATED);
-
-        } catch (Exception e){
-            System.out.println(e);
+            ${class.name?uncap_first}Service.save(${class.name?uncap_first});
+            return new ResponseEntity(HttpStatus.OK);
         }
-
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        catch(Exception e){
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+    	}    
     }
     
-    @PutMapping(value="/delete/{id}")
-    public ResponseEntity<Boolean> delete(@PathVariable Long id) {
-
-        Boolean deleted = ${class.name?uncap_first}Service.delete(id);
-
-        if (deleted) {
-            return new ResponseEntity<Boolean>(${class.name?uncap_first}Service.delete(id), HttpStatus.OK);
-        }
-
-        return new ResponseEntity<Boolean>(${class.name?uncap_first}Service.delete(id), HttpStatus.NOT_FOUND);
+    @DeleteMapping(value="/delete/{id}")
+    public ResponseEntity<${class.name}> delete(@PathVariable Long id) {
+    	${class.name} ${class.name?uncap_first} = ${class.name?uncap_first}Service.getById(id);
+    	
+    	try {
+    		${class.name?uncap_first}Service.delete(${class.name?uncap_first});
+    		return new ResponseEntity<>(${class.name?uncap_first}, HttpStatus.OK);
+    	}
+    	catch(Exception e) {
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+    	}
+    }
+    
+    private void initModel(Model model) {
+    	model.addAttribute("${class.name?uncap_first}", new ${class.name}());
+    	model.addAttribute("${class.name?uncap_first}List", ${class.name?uncap_first}Service.getAll());
     }
  
 }
