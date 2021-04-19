@@ -1,9 +1,9 @@
 package ${class.typePackage};
 
-public interface MediatekaEnumerationInterface<T> {
+public interface ${app_name}EnumerationInterface<T> {
 	T getValue();
 	
-	static <E extends Enum<E> &  MediatekaEnumerationInterface<?>> E getEnumForValue(final Class<E> className, final Object value) {
+	static <E extends Enum<E> &  ${app_name}EnumerationInterface<?>> E getEnumForValue(final Class<E> className, final Object value) {
 		
 		E[] possibleValues = className.getEnumConstants();
 		E returnValue = null;

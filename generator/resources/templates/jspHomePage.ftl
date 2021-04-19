@@ -5,8 +5,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <html>
-<body>
-<%@include file="navbar.jsp"%>
-<h1 class="text-center">Wellcome to HomePage</h1>
-</body>
+  <body>
+    <%@include file="navbar.jsp"%>
+    <h1 class="text-center">Welcome to HomePage</h1>
+  </body>
 </html>
