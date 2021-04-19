@@ -26,7 +26,7 @@ public class ${class.name}Controller{
     }
     
 	@GetMapping(value = "/new")
-	public String getOne(@PathVariable Long id, Model model) {
+	public String create(Model model) {
 		initModel(model);
 		return "${class.name}Form";
     }

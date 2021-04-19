@@ -24,25 +24,13 @@
       <li class="nav-item active">
         <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/songs">Songs</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/playlist">Playlists</a>
-      </li>
-   	  <li class="nav-item">
-        <a class="nav-link" href="/artist">Artists</a>
-      </li>
- 	  <li class="nav-item">
-        <a class="nav-link" href="/artist/new">New Artist</a>
-      </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Dropdown
+          Songs
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
+          <a class="dropdown-item" href="/song">All songs</a>
+          <a class="dropdown-item" href="/song/new">New song</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#">Something else here</a>
         </div>
