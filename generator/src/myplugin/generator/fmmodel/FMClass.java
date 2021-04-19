@@ -18,6 +18,9 @@ public class FMClass extends FMType {
 
 	private List<FMMethod> methods = new ArrayList<FMMethod>();
 
+	private List<FMReferencedProperty> referencedProperties = new ArrayList<>();
+	
+	
 	public FMClass(String name, String classPackage, String visibility) {
 		super(name, classPackage);
 		this.visibility = visibility;
@@ -27,17 +30,34 @@ public class FMClass extends FMType {
 		return properties;
 	}
 
+	public List<FMReferencedProperty> getReferencedProperties() {
+		return referencedProperties;
+	}
+	
 	public Iterator<FMProperty> getPropertyIterator() {
 		return properties.iterator();
 	}
 
+	public Iterator<FMReferencedProperty> getReferencedPropertyIterator() {
+		return referencedProperties.iterator();
+	}
+	
 	public void addProperty(FMProperty property) {
 		properties.add(property);
+	}
+	
+	public void addReferencedProperty(FMReferencedProperty property) {
+		referencedProperties.add(property);
 	}
 
 	public int getPropertyCount() {
 		return properties.size();
 	}
+	
+	public int getReferencedPropertyCount() {
+		return referencedProperties.size();
+	}
+	
 	
 	public List<FMMethod> getMethods() {
 		return methods;
