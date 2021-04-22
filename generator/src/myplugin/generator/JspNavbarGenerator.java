@@ -22,13 +22,13 @@ public class JspNavbarGenerator extends BasicGenerator {
 
 	public void generate() {
 
+
 		try {
 			super.generate();
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 
-		
 		List<FMClass> classes = FMModel.getInstance().getClasses();
 		for (int i = 0; i < classes.size(); i++) {
 			FMClass cl = classes.get(i);
@@ -48,6 +48,7 @@ public class JspNavbarGenerator extends BasicGenerator {
 				JOptionPane.showMessageDialog(null, e.getMessage());
 			}
 		}
+	
 	}
 
 }
