@@ -4,6 +4,7 @@ import mbrs.tim2.enumerations.GenreEnum;
 
 import javax.persistence.*;
 import java.util.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table
@@ -14,7 +15,12 @@ ${class.visibility} class ${class.name} {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     ${property.visibility} ${property.type?cap_first} ${property.name?uncap_first};
 
-   <#elseif property.type == "date" || property.type == "long">
+   <#elseif property.type == "date" >
+    @Column
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    ${property.visibility} ${property.type?cap_first} ${property.name?uncap_first};
+   
+   <#elseif property.type == "long">
     @Column
     ${property.visibility} ${property.type?cap_first} ${property.name?uncap_first};
    
