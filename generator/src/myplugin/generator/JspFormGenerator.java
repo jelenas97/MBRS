@@ -86,6 +86,7 @@ public class JspFormGenerator extends BasicGenerator{
 	                    context.put("enum_values", enumerationValues);
 
 	                    context.put("properties", cl.getProperties());
+	                    context.put("referencedProperties", cl.getReferencedProperties());
 	                    context.put("entity_properties", entity_relations);
 	                    context.put("importedPackages", cl.getImportedPackages());
 
