@@ -41,7 +41,7 @@
 
                             <c:set var="enum_val"><#list enum_values[property.type] as val>${val}<#sep>,</#sep></#list></c:set>
                             <c:forEach items="${opening_bracket}enum_val${closing_bracket}" var="val">
-        				        <option value="${opening_bracket}val${closing_bracket}" <c:if test="${opening_bracket} val == ${class_name}.${property.name?uncap_first} ${closing_bracket}">selected</c:if>  >${opening_bracket}val${closing_bracket}</option>
+        				        <option value="${opening_bracket}fn:toUpperCase(val)${closing_bracket}" <c:if test="${opening_bracket} val == ${class_name}.${property.name?uncap_first} ${closing_bracket}">selected</c:if>  >${opening_bracket}val${closing_bracket}</option>  				     
        				        </c:forEach>
                         </form:select>	
                     <#else>
