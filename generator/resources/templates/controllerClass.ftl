@@ -60,14 +60,10 @@ public class ${class.name}Controller{
     }
       
     @PostMapping(value = "/new")
-    public ResponseEntity<${class.name}> add(@ModelAttribute ${class.name} ${class.name?uncap_first}){
-        try {
+    public String add(@ModelAttribute ${class.name} ${class.name?uncap_first}){
+ 
             ${class.name?uncap_first}Service.save(${class.name?uncap_first});
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        catch(Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    	}    
+            return "redirect:/${class.name?uncap_first}";
     }
     
     @DeleteMapping(value="/delete/{id}")
