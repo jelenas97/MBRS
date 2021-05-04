@@ -6,11 +6,17 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import mbrs.tim2.model.${class.name};
+<#list referencedProperties as property>
+import mbrs.tim2.model.${property.type?cap_first};
+</#list>
 import org.springframework.ui.Model;
 import java.util.Collection;
 import java.util.List;
 
 import mbrs.tim2.service.${class.name}Service;
+<#list referencedProperties as property>
+import mbrs.tim2.service.${property.type?cap_first}Service;
+</#list>
 
 @Controller
 @RequestMapping("/${class.name?uncap_first}")
@@ -18,6 +24,13 @@ public class ${class.name}Controller{
 
 	@Autowired
 	private ${class.name}Service ${class.name?uncap_first}Service;
+	
+	<#list referencedProperties as property>
+	@Autowired
+	private ${property.type?cap_first}Service ${property.type?uncap_first}Service;
+	</#list>
+	
+	
 	
 	@GetMapping
 	public String getAll(Model model) {
@@ -28,11 +41,15 @@ public class ${class.name}Controller{
 	@GetMapping(value = "/new")
 	public String create(Model model) {
 		initModel(model);
+		<#list referencedProperties as property>
+		List<${property.type?cap_first}> ${property.name?uncap_first}List = (List<${property.type?cap_first}>) ${property.type?uncap_first}Service.getAll();
+        model.addAttribute("${property.name?uncap_first}List", ${property.name?uncap_first}List);
+		</#list>
 		return "${class.name}Form";
     }
     
     @PostMapping(value = "/update/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody ${class.name} ${class.name?uncap_first}) {
+    public ResponseEntity<?> update(@PathVariable Long id, @ModelAttribute ${class.name} ${class.name?uncap_first}) {
         try {
             ${class.name?uncap_first}Service.save(${class.name?uncap_first});
             return new ResponseEntity<>(HttpStatus.OK);
@@ -42,15 +59,11 @@ public class ${class.name}Controller{
         }
     }
       
-    @PostMapping
-    public ResponseEntity<${class.name}> add(@RequestBody ${class.name} ${class.name?uncap_first}){
-        try {
+    @PostMapping(value = "/new")
+    public String add(@ModelAttribute ${class.name} ${class.name?uncap_first}){
+ 
             ${class.name?uncap_first}Service.save(${class.name?uncap_first});
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        catch(Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    	}    
+            return "redirect:/${class.name?uncap_first}";
     }
     
     @DeleteMapping(value="/delete/{id}")

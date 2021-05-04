@@ -70,6 +70,7 @@ public class JspListViewGenerator extends BasicGenerator {
 
 	                    context.put("class", cl);
 	                    context.put("properties", cl.getProperties());
+	                    context.put("referencedProperties", cl.getReferencedProperties());
 	                    getTemplate().process(context, out);
 	                    out.flush();
 	                }

@@ -50,6 +50,15 @@
           <a class="dropdown-item" href="/artist/new">New Artist</a>
           <a class="dropdown-item" href="/artist">All Artists</a>
         </div>
+      </li>  
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			Playlists
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/playlist/new">New Playlist</a>
+          <a class="dropdown-item" href="/playlist">All Playlists</a>
+        </div>
       </li>         
     </ul>
     <form class="form-inline my-2 my-lg-0">
