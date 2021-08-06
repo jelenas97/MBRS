@@ -4,6 +4,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+<#assign opening_bracket = "${">
+<#assign closing_bracket = "}">
+
 <html>
   <body>
     <%@include file="navbar.jsp"%>
@@ -20,6 +23,9 @@
                         	<#list properties as property>
                         	<th>${property.name?cap_first}</th>
                         	</#list>
+                        	<#list referencedProperties as property>
+                    		<th>${property.name?cap_first}</th>
+                        	</#list>
                     	</tr>
                     </thead>
                     <tbody>
@@ -28,6 +34,13 @@
                 		<#list properties as property>
                     		<td>"${ "${" + class.name?uncap_first + "." + property.name?uncap_first + "}" }"</td>
                 		</#list>
+                		 <#list referencedProperties as property>
+                		 <td>
+		                   <c:forEach items="${ "${" + class.name?uncap_first + "." + property.name?uncap_first + "}" }" var="${property.name?uncap_first}">
+		                 		<label>"${ "${" + property.name?uncap_first + ".name" + "}" }" </label>
+		                   </c:forEach>
+		                 </td>
+		                 </#list>
                     	</tr>
                     	</c:forEach>
                     </tbody>
